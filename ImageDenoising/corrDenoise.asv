@@ -1,0 +1,15 @@
+function [cI] = corrDenoise(I,PriI)
+%This function is used to try an idea for image denoising
+%INPUTS
+%   I: the to-be denoised image
+%   PriI: the low resolution prior information
+%OUTPUTS
+%   cI: the clean image 
+
+[nPE nFE] = size(PriI);
+cI = zeros(nPE,nFE);
+cI(2:nPE-1,2:nFE-1) = PriI(2:nPE-1,2:nFE-1)./PriI(1:nPE-2,2:nFE-1).*I(1:nPE-2,2:nFE-1)+...
+    PriI(2:nPE-1,2:nFE-1)./PriI(3:nPE,2:nFE-1).*I(3:nPE,2:nFE-1)+...
+    PriI(2:nPE-1,2:nFE-1)./PriI(2:nPE-1,1:nFE-2).*I(2:nPE-1,1:nFE-2)+...
+    PriI(2:nPE-1,2:nFE-1)./PriI(2:nPE-1,3:nFE).*I(2:nPE-1,3:nFE)+...
+    PriI(2:nPE-1,2:nFE-1)./PriI(2:nPE-1,3:nFE).*I(2:nPE-1,3:nFE)+...;
